@@ -87,3 +87,4 @@ git commit "chore: update shared"
 **Creado:** 2026-05-19  
 **Arquitectura:** Git submodules + symlinks  
 **Propósito:** DRY (Don't Repeat Yourself) en múltiples repos
+# sell-it-yourself-shared
