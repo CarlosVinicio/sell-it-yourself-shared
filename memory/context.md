@@ -5,15 +5,59 @@
 
 ---
 
+## Arquitectura: Librería Compartida (2026-05-19)
+
+**Nueva estructura de 3 repos:**
+
+```
+sinagencias-web/              ← Repo independiente (Next.js)
+  ├── .gitmodules             (referencia a sinagencias-shared)
+  ├── shared/                 (submodule mounted)
+  ├── docs -> shared/docs/    (symlink para compatibilidad)
+  └── src/                    (código web)
+
+sinagencias-api/              ← Repo independiente (NestJS)
+  ├── .gitmodules             (referencia a sinagencias-shared)
+  ├── shared/                 (submodule mounted)
+  ├── docs -> shared/docs/    (symlink para compatibilidad)
+  └── src/                    (código API)
+
+sinagencias-shared/           ← Librería compartida (este repo)
+  ├── memory/                 (context, decisions, pending)
+  ├── docs/                   (business, legal, tech, ux, etc.)
+  ├── scripts/                (sync-docs.sh, setup-env.sh)
+  ├── config/                 (eslint, prettier, tsconfig base)
+  └── ROADMAP-TIERS.md        (mapa maestro)
+```
+
+**Ventajas:**
+✅ Documentación centralizada (una fuente de verdad)
+✅ Repos web y api totalmente independientes (CI/CD separate)
+✅ Git submodules maneja versionado de shared lib
+✅ Bajo overhead para un solo developer
+
+**Actualizar shared lib:**
+```bash
+cd web/shared  # o api/shared
+git add memory/context.md
+git commit -m "docs: update context"
+git push
+cd ..
+git add shared
+git commit "chore: update shared"
+```
+
+---
+
 ## Estado general
 
 | Campo | Valor |
 |-------|-------|
 | Proyecto | SINAGENCIAS.ES |
 | Tier activo | **Tier 1** — herramientas gratuitas SEO |
-| Fase de construcción | Scaffolding ✅ + T2 ✅ + coeficientes verificados ✅ + OG image ✅ + blog infraestructura ✅ + artículo companion ✅ — pendiente: disclaimer fiscal, backend NestJS, T3-T6, deploy |
-| Arquitectura | Dos repos en `/Documents/Personal/Proyectos/SinAgencias/`: `web/` (Next.js) · `api/` (NestJS) |
-| Última actualización | 2026-04-30 (sesión 5) |
+| Fase de construcción | T-120 ✅ (blog articles) + T-123b ✅ (NestJS subscribers) — pendiente: T-114 (IRPF calculator), T-122 (deploy), T-112 (Supabase setup) |
+| Arquitectura | **3 repos independientes:** `sinagencias-web` (Next.js) · `sinagencias-api` (NestJS) · `sinagencias-shared` (docs + scripts) — linked via git submodules |
+| Última actualización | 2026-05-19 (sesión 6 - shared lib refactor) |
 
 ### Contexto de la última sesión (2026-04-27, sesión 3)
 - **Migración a shadcn/ui (D-014):** `globals.css` reescrito con sistema de dos niveles (nivel 1: variables semánticas en `@layer base :root`; nivel 2: utilidades Tailwind en `@theme inline`). Componentes `button`, `input`, `label`, `card`, `badge`, `accordion`, `separator` instalados vía `npx shadcn@latest add`. Accordion migrado a Radix UI con keyboard nav + animaciones. Renombradas 37 referencias `--color-muted` → `--color-muted-foreground` (mismatch semántico shadcn). D-012 supersedida por D-014.
