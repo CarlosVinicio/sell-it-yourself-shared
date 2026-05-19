@@ -22,7 +22,7 @@
 | T-123b | ✅ Completar T-123: instalar deps (@supabase, resend, validators), módulo `subscribers`, integración Supabase | Tech | — | ✅ Completado |
 | T-112 | Configurar Supabase: proyecto, tabla `subscribers`, variables de entorno en ambos repos | Tech | T-111, T-123 | 🔴 Alta |
 | T-113b | ~~Cerrar T2 antes del deploy: revisar disclaimer con asesor fiscal~~ **Omitido — el disclaimer actual es defensible** | Legal | T-113 | ~~🔴~~ ✅ Descartado |
-| T-114 | Construir T3: Calculadora IRPF venta de piso | Producto | T-111 | 🔴 Alta |
+| ~~T-114~~ | ~~Construir T3: Calculadora IRPF venta de piso~~ | Producto | T-111 | ✅ Completado |
 | T-115 | Construir T4: Checklist documentación por CCAA | Producto | T-111 | 🔴 Alta |
 | T-116 | Construir T1: Calculadora ahorro vs. agencia | Producto | T-111 | 🟡 Media |
 | T-117 | Construir T5: Calculadora gastos de notaría | Producto | T-111 | 🟡 Media |
@@ -102,3 +102,5 @@
 | T-123a | Scaffolding sinagencias-api como proyecto NestJS independiente en `/Documents/Personal/Proyectos/SinAgencias/api/` | 2026-04-30 | Proyecto inicializado con estructura modular, docs/ compartida, CLAUDE.md backend, package.json, git init (commit b7d7ced) |
 | T-123b | Completar T-123: instalar deps (Supabase, Resend, class-validator, class-transformer), módulo subscribers + health, ESLint/Prettier | 2026-04-30 | Commit 5cc3b8c: subscribers module (DTO+Service+Controller), POST /subscribers → 201, Supabase integration, Resend email ready. Build ✅ Lint ✅ |
 | T-120 | Blog: infraestructura MDX + 4 artículos prioritarios de lanzamiento | 2026-04-30 | Commit 5610d9c: 4 SEO articles (1,467 lines) — cuanto-cobra-una-agencia-inmobiliaria (commission breakdown), documentos-necesarios-vender-piso-ccaa (checklist by region), irpf-venta-piso-guia-completa (tax calculation 19–28%), vender-piso-sin-agencia-guia-paso-a-paso (7-step guide). All with H1 optimization, internal CTAs, FAQ, real examples. |
+| T-Shared | Refactor: librería compartida `sinagencias-shared` con git submodules | 2026-05-19 | 3 repos independientes (web, api, shared). Docs/scripts centralizados en `shared/`. Submodules con ruta relativa `../shared`. ARCHITECTURE.md + README-SHARED-LIB.md. |
+| T-114 | Construir T3: Calculadora IRPF venta de piso (función pura + 24 tests 100% cobertura + Form/Result/Calculator + Zod schema con superRefine + HowTo+FAQPage JSON-LD + disclaimer + email capture T3) | 2026-05-19 | Commit 96abfd2: `src/features/capital-gains-tax/*` (9 files, 166 insertions). Tramos IRPF ahorro 2026 (19–28%), exenciones (>65 + reinversión total/parcial), pérdida patrimonial, tipo efectivo. Build ✅ Lint ✅ Tests 40/40 ✅. Pendiente: OG image + revisión asesor fiscal (T-311). |
