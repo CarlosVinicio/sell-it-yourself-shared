@@ -55,9 +55,9 @@ git commit "chore: update shared"
 |-------|-------|
 | Proyecto | SINAGENCIAS.ES |
 | Tier activo | **Tier 1** — herramientas gratuitas SEO |
-| Fase de construcción | T-120 ✅ (blog articles) + T-123b ✅ (NestJS subscribers) — pendiente: T-114 (IRPF calculator), T-122 (deploy), T-112 (Supabase setup) |
+| Fase de construcción | T-120 ✅ · T-123b ✅ · T-114 ✅ · T-115 ✅ — pendiente: T-112 (Supabase), T-116–T-118 (T1/T5/T6), T-119 (landing), T-121 (SEO técnico), T-122 (deploy) |
 | Arquitectura | **3 repos independientes:** `sinagencias-web` (Next.js) · `sinagencias-api` (NestJS) · `sinagencias-shared` (docs + scripts) — linked via git submodules |
-| Última actualización | 2026-05-19 (sesión 6 - shared lib refactor) |
+| Última actualización | 2026-05-19 (sesión 7 - T-114/T-115 + blog→guides refactor) |
 
 ### Contexto de la última sesión (2026-04-27, sesión 3)
 - **Migración a shadcn/ui (D-014):** `globals.css` reescrito con sistema de dos niveles (nivel 1: variables semánticas en `@layer base :root`; nivel 2: utilidades Tailwind en `@theme inline`). Componentes `button`, `input`, `label`, `card`, `badge`, `accordion`, `separator` instalados vía `npx shadcn@latest add`. Accordion migrado a Radix UI con keyboard nav + animaciones. Renombradas 37 referencias `--color-muted` → `--color-muted-foreground` (mismatch semántico shadcn). D-012 supersedida por D-014.
@@ -197,9 +197,32 @@ Tier 3 (mes 6–18): MVP portal completo, cuando métricas lo justifiquen
 - D-009: Dos repos separados — `sinagencias-web` (Next.js) + `sinagencias-api` (NestJS). Sin monorepo. (ADR-003)
 - D-010: Estructura feature-first del repo frontend. Mapeo brief→feature: T1→agency-savings, T2→property-value-tax, T3→capital-gains-tax, T4→document-checklist, T5→notary-fees, T6→net-sale-proceeds. Carpetas de ruta en `app/(marketing)/herramientas/` en castellano por SEO (única excepción consciente a D-008). (ADR-004)
 
-### Próximos pasos
-1. **T-111: Scaffolding `sinagencias-web`** — estructura `app/`, `components/`, `lib/` según `architecture-scalable.md` y `ADR-002`
-2. **T-123: Scaffolding `sinagencias-api`** — proyecto NestJS con módulo `subscribers`, integración Supabase + Resend
-3. **T-122: Configurar Vercel + Railway/Render + dominio** — antes del primer deploy
-4. **T-112: Configurar Supabase** — tabla `subscribers`, variables de entorno en ambos repos
-5. **T-113: Construir T2** (Calculadora plusvalía municipal) — mayor keyword del Tier 1
+### Sesión 7 (2026-05-19) — Blog→Guides + T-114/T-115 completadas
+
+**Cambios arquitectónicos:**
+- **Blog → Guides refactor (D-011):** Renombrado `/blog` a `/guias` (semántica más correcta para contenido evergreen). Cambios: carpetas (`features/guides/`, `content/guides/`), rutas (`/guides`, `/guides/[slug]`), tipos (`GuidePost`, `GuidePostWithContent`), navigation link. 5 artículos migrados sin cambios de contenido. Commit `9777932`.
+
+**T-114 completado:** Calculadora IRPF venta de piso (T3).
+- Commit `96abfd2`: tipos CapitalGainsTaxInput/Result, función pura calculateCapitalGainsTax (24 tests 100%), schema Zod superRefine, componentes Form/Result/Calculator, JSON-LD HowTo (4 pasos) + FAQPage (7 preguntas), disclaimer, EmailCaptureInline.
+- Tramos IRPF 2026 (19–28%), exenciones over-65 + reinversión total/parcial, pérdida patrimonial.
+- Build 5.37 kB, Tests 40/40 ✅.
+- 🔴 Pendiente: OG image, revisión asesor fiscal (T-311).
+
+**T-115 completado:** Checklist documentación por CCAA (T4).
+- Commits `9777932` (guides rename) + `9c55b14` (T4).
+- Tipos: CCAA (19 regiones), PropertyType (piso/chalet/local/terreno), DocumentCategory (5), DocumentoChecklist (18 docs base).
+- Data: CCAARules para las 19 CCAA (cédula requerida en Asturias, Baleares, Cantabria, Cataluña, La Rioja, Murcia, Navarra, Valencia; ITE threshold 45–50 años según región). 🔴 Todos con `verificado: false`.
+- Lógica: aplicaSi callback para condicionales (cédula, ITE, hipoteca).
+- UI: Form (select nativo CCAA/tipo, InputCheckbox hipoteca, Input antigüedad), Result (ResultCard summary + Accordion grouped by category con Checkbox + disclosure details), Calculator (orquestación + localStorage persistence).
+- Tests: 18 nuevas (CCAA rules, ITE >50, hipoteca, grouping, cost/days aggregation).
+- Build 6.49 kB, Lint ✅, Tests 58 totales (16 T2 + 24 T3 + 18 T4) ✅.
+- 🔴 ccaa-data verificado: false (T-311).
+
+### Próximos pasos prioritarios
+1. **T-112** — Supabase: tabla subscribers, anon key + service role key, .env en web + api
+2. **T-116, T-117, T-118** — T1 (ahorro), T5 (notaría), T6 (neto) — reutilizan patrón Form+Result
+3. **OG images** — generar capital-gains-tax.png, document-checklist.png con script sharp
+4. **T-119** — Landing page refinement (si es necesaria antes de deploy)
+5. **T-121** — SEO técnico: next-sitemap, structured data, meta tags
+6. **T-122** — Vercel deploy + GSC + dominio
+7. **T-311** — Validación asesor fiscal/legal: disclaimers T2/T3/T4, ccaa-data verificación

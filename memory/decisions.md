@@ -176,7 +176,20 @@ Tier 3 → MVP portal completo (cuando haya métricas que lo justifiquen)
 
 ---
 
-### [D-014] Package manager: npm en el dev de Carlos (corepack roto)
+### [D-015] Documentación educativa: /blog → /guias (nomenclatura semántica)
+- **Fecha:** 2026-05-19
+- **Área:** Producto / SEO
+- **Estado:** ✅ Confirmada
+- **Decisión:** Las 5 guías educativas (artículos evergreen sobre cómo vender piso sin agencia) se publican bajo la ruta `/guias` en lugar de `/blog`. La nomenclatura `/guias` es más semánticamente correcta para contenido howto/educativo permanente, mejora el posicionamiento en keywords educativas ("guía cómo vender"), y se alinea con el enfoque de herramientas + educación del Tier 1.
+- **Cambios ejecutados:** Rutas `/blog` → `/guias`, carpetas `features/blog` → `features/guides`, tipos `BlogPost/BlogPostWithContent` → `GuidePost/GuidePostWithContent`, configuración de navegación (header link "Blog" → "Guías").
+- **Contenido sin cambios:** Los 4 artículos (plusvalía, documentos, IRPF, vender-sin-agencia) se migran con sus rutas y referencias actualizadas.
+- **Referencia:** Commit `9777932` (refactor: rename blog → guides)
+- **Razón:** Semántica más precisa para Google's NLP, mejor CTR en SERPs educativas, consistencia con el posicionamiento de "soluciones educativas gratuitas".
+- **Alternativas descartadas:** Mantener `/blog` (arriesgado — se posiciona contra el mismo público que el `/blog` tradicional de empresas; nuestro contenido no es noticias).
+
+---
+
+### [D-016] Package manager: npm en el dev de Carlos (corepack roto)
 - **Fecha:** 2026-04-27
 - **Área:** Operativa
 - **Estado:** 🟡 Provisional
